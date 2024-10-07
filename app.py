@@ -112,7 +112,7 @@ api.add_resource(AddEmployee, '/add')
 api.add_resource(UpdateEmployee, '/update/<int:id>')
 api.add_resource(DeleteEmployee, '/delete/<int:id>')
 
-#
+
 
 if __name__ =='__main__':
     app.run(debug=True)
