@@ -1,12 +1,14 @@
 from flask import Flask, request, jsonify
 from flask_restful import Resource, Api
 from flask_sqlalchemy import SQLAlchemy
+from flask import make_response
 
 app = Flask(__name__)
 api = Api(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///emp.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 
 db = SQLAlchemy(app)
 
@@ -54,14 +56,20 @@ if __name__ == '__main__':
     create_tables()
     app.run(debug=True)
     
-class GetEmployee (Resource):
+class GetEmployee(Resource):
     def get(self):
         employees = Employee.query.all()
-        emp_list =[]
+        emp_list = []
         for emp in employees:
-            emp_data ={'Id': emp.id, 'FirstName': emp.firstname, 'LatName': emp.lastname, 'Gender' : emp.gender, 'Salary':   emp.salary }
+            emp_data = {
+                'Id': emp.id,
+                'FirstName': emp.firstname,
+                'LastName': emp.lastname,
+                'Gender': emp.gender,
+                'Salary': emp.salary
+            }
             emp_list.append(emp_data)
-            return{"employees": emp_list}, 200
+        return {"employees": emp_list}, 200
             
 class AddEmployee(Resource):
     def post(self):
@@ -109,3 +117,4 @@ api.add_resource(DeleteEmployee, '/delete/<int:id>')
 if __name__ =='__main__':
     app.run(debug=True)
     app.config['DEBUG'] = True
+
